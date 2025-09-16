@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: mailpit-postgres
+    environment:
+      POSTGRES_DB: mailpit-db
+      POSTGRES_USER: user1
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user1 -d mailpit-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:7.8
+    container_name: mailpit-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: damosindiarra@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: 1234
+    ports:
+      - "5051:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: mailpit
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    ports:
+      - "8025:8025"  # interface web Mailpit
+      - "1025:1025"  # SMTP pour Spring Boot
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+volumes:
+  postgres-data:
+  pgadmin-data:
+  mailpit-data:

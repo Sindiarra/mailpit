@@ -1,0 +1,1 @@
+ALTER TABLE activation_code ADD COLUMN status VARCHAR(50) DEFAULT 'PENDING';
