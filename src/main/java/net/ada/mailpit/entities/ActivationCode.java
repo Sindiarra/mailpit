@@ -2,59 +2,66 @@ package net.ada.mailpit.entities;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
+@Table(name = "activation_codes")
 public class ActivationCode {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
+    @Column(nullable = false, unique = true)
     private String code;
 
-    private String userEmail;
+    @Column(nullable = false)
+    private LocalDateTime expiryDate;
 
-    private LocalDateTime expiration;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
+    // ----------------------------
+    // Constructeurs
+    // ----------------------------
     public ActivationCode() {}
 
-    public ActivationCode(String code, String userEmail, LocalDateTime expiration) {
+    public ActivationCode(UUID id, String code, LocalDateTime expiryDate, User user) {
+        this.id = id;
         this.code = code;
-        this.userEmail = userEmail;
-        this.expiration = expiration;
+        this.expiryDate = expiryDate;
+        this.user = user;
     }
 
-    // Getters et setters...
+    // ----------------------------
+    // Getters & Setters
+    // ----------------------------
+    public UUID getId() {
+        return id;
+    }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;
     }
-
     public void setCode(String code) {
         this.code = code;
     }
 
-    public Long getId() {
-        return id;
+    public LocalDateTime getExpiryDate() {
+        return expiryDate;
+    }
+    public void setExpiryDate(LocalDateTime expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public User getUser() {
+        return user;
     }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public LocalDateTime getExpiration() {
-        return expiration;
-    }
-
-    public void setExpiration(LocalDateTime expiration) {
-        this.expiration = expiration;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -33,8 +33,8 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
-    private boolean enabled = false; // activé après email
-    private boolean locked = false;  // peut être utilisé plus tard (ex: sécurité)
+    private boolean enabled = false;
+    private boolean locked = false;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -42,8 +42,11 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // ======= Constructeurs =======
-    public User() {}
+    // ----------------------------
+    // Constructeurs
+    // ----------------------------
+    public User() {
+    }
 
     public User(UUID id, String firstName, String lastName, String email, String phoneNumber,
                 String password, Role role, boolean enabled, boolean locked,
@@ -61,63 +64,94 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    // ======= Getters =======
-    public UUID getId() { return id; }
-    public String getFirstName() { return firstName; }
-    public String getLastName() { return lastName; }
-    public String getEmail() { return email; }
-    public String getPhoneNumber() { return phoneNumber; }
-    public String getPassword() { return password; }
-    public Role getRole() { return role; }
-    public boolean isEnabled() { return enabled; }
-    public boolean isLocked() { return locked; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    // ----------------------------
+    // Getters & Setters
+    // ----------------------------
+    public UUID getId() {
+        return id;
+    }
 
-    // ======= Setters =======
-    public void setId(UUID id) { this.id = id; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-    public void setEmail(String email) { this.email = email; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public void setPassword(String password) { this.password = password; }
-    public void setRole(Role role) { this.role = role; }
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
-    public void setLocked(boolean locked) { this.locked = locked; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
-    // ======= Builder alternatif (optionnel) =======
-    public static UserBuilder builder() { return new UserBuilder(); }
+    public String getFirstName() {
+        return firstName;
+    }
 
-    public static class UserBuilder {
-        private UUID id;
-        private String firstName;
-        private String lastName;
-        private String email;
-        private String phoneNumber;
-        private String password;
-        private Role role;
-        private boolean enabled;
-        private boolean locked;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-        public UserBuilder id(UUID id) { this.id = id; return this; }
-        public UserBuilder firstName(String firstName) { this.firstName = firstName; return this; }
-        public UserBuilder lastName(String lastName) { this.lastName = lastName; return this; }
-        public UserBuilder email(String email) { this.email = email; return this; }
-        public UserBuilder phoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; return this; }
-        public UserBuilder password(String password) { this.password = password; return this; }
-        public UserBuilder role(Role role) { this.role = role; return this; }
-        public UserBuilder enabled(boolean enabled) { this.enabled = enabled; return this; }
-        public UserBuilder locked(boolean locked) { this.locked = locked; return this; }
-        public UserBuilder createdAt(LocalDateTime createdAt) { this.createdAt = createdAt; return this; }
-        public UserBuilder updatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; return this; }
+    public String getLastName() {
+        return lastName;
+    }
 
-        public User build() {
-            return new User(id, firstName, lastName, email, phoneNumber,
-                    password, role, enabled, locked, createdAt, updatedAt);
-        }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

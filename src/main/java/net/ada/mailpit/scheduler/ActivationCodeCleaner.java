@@ -1,8 +1,10 @@
 package net.ada.mailpit.scheduler;
 
+
 import net.ada.mailpit.repository.ActivationCodeRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +19,8 @@ public class ActivationCodeCleaner {
 
     // Exécuté toutes les heures
     @Scheduled(cron = "0 0 * * * ?")
+    @Transactional
     public void cleanExpiredCodes() {
-        codeRepository.deleteByExpirationBefore(LocalDateTime.now());
+        codeRepository.deleteByExpiryDateBefore(LocalDateTime.now());
     }
 }

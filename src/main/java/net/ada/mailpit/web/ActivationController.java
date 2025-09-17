@@ -16,10 +16,11 @@ public class ActivationController {
 
     @GetMapping("/activate")
     public ResponseEntity<String> activate(@RequestParam String code) {
-        if (userService.activateUser(code)) {
+        if (userService.activateAccount(code)) {
             return ResponseEntity.ok("Compte activé avec succès !");
         } else {
             return ResponseEntity.badRequest().body("Code d'activation invalide ou expiré.");
         }
     }
+
 }

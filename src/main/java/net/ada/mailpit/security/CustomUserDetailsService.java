@@ -1,6 +1,5 @@
 package net.ada.mailpit.security;
 
-import lombok.RequiredArgsConstructor;
 import net.ada.mailpit.entities.User;
 import net.ada.mailpit.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +8,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -27,8 +25,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .username(user.getEmail())
                 .password(user.getPassword())
                 .roles(user.getRole().name())
-                .disabled(!user.isEnabled())      // OK avec Lombok
-                .accountLocked(user.isLocked())   // OK avec Lombok
+                .disabled(!user.isEnabled())
+                .accountLocked(user.isLocked())
                 .build();
     }
 }

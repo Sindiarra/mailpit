@@ -40,18 +40,26 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestParam String email,
-                                        @RequestParam String password,
-                                        HttpServletResponse response) {
+    public ResponseEntity<String> login(@RequestBody UserDTO userDTO, HttpServletResponse response) {
+        // Vérifier si l'utilisateur est activé
+        User user = userRepository.findByEmail(userDTO.getEmail())
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        if (!user.isEnabled()) {
+            return ResponseEntity.status(403).body("Compte non activé");
+        }
+
+        // Authentification
         Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(email, password));
+                new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        String accessToken = jwtUtil.generateAccessToken(email);
-        String refreshToken = jwtUtil.generateRefreshToken(email);
+        // Génération des tokens
+        String accessToken = jwtUtil.generateAccessToken(userDTO.getEmail());
+        String refreshToken = jwtUtil.generateRefreshToken(userDTO.getEmail());
 
-        // Ajouter refreshToken dans un cookie HttpOnly
+        // Ajouter le refreshToken dans un cookie HttpOnly
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
@@ -60,6 +68,7 @@ public class AuthController {
 
         return ResponseEntity.ok(accessToken);
     }
+
 
     @PostMapping("/refresh")
     public ResponseEntity<String> refresh(@CookieValue("refreshToken") String refreshToken,
